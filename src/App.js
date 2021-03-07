@@ -6,7 +6,7 @@ import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component';
 
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 
 class App extends React.Component {    //in this we will have access to 
   constructor(){
@@ -19,10 +19,21 @@ class App extends React.Component {    //in this we will have access to
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {     //we are fetching data from firestore database
+      if(userAuth){
+        const userRef = await createUserProfileDocument(userAuth);           //userAuth is passed ... in firebase utils it checks if snapshot exists if not then it will create one and the return userRef
 
-      console.log(user);
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+        });
+      }
+
+     this.setState({ currentUser: userAuth});     //when the user logs out the currentuser value is set to null
     });
   }
   componentWillUnmount() {

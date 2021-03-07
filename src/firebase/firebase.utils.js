@@ -12,6 +12,30 @@ const config = {
     measurementId: "G-W20X1K2R41"
   };
 
+  export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if(!userAuth) return;
+
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    const snapShot = await userRef.get();           //for getting the values
+
+    if(!snapShot.exists) {                                 //checks whether there is any data if not then it will create
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+
+      try {                                     //creating the data by taking information from userAuth.uid
+        await userRef.set({
+          displayName,
+          email,
+          createdAt,
+          ...additionalData
+        }) 
+      }catch(error) {
+          console.log('error creating user', error.message);
+      }
+    }
+    return userRef;
+  }
+  
   firebase.initializeApp(config);
 
   export const auth = firebase.auth();    // we can now use this authentication library which is there in firevase anywhere
