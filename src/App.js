@@ -13,6 +13,7 @@ import Header from './components/header/header.component';
 import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCollections} from './redux/shop/shop.selectors';
 import { createStructuredSelector } from 'reselect';
 
 class App extends React.Component {    //in this we will have access to 
@@ -63,8 +64,8 @@ class App extends React.Component {    //in this we will have access to
     );
   }         
 }
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector ({
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
