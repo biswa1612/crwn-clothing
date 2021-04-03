@@ -4,6 +4,13 @@ export const SignInContainer = styled.div`
   width: 380px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 800px){
+    margin-bottom: 50px;
+    width: 380px;
+  }
+  @media screen and (max-width: 400px){
+      width: 295px;
+  }
 `;
 
 export const SignInTitle = styled.h2`

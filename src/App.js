@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import './App.css';
+
 
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
@@ -15,6 +15,9 @@ import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { selectCollections} from './redux/shop/shop.selectors';
 import { createStructuredSelector } from 'reselect';
+
+
+import { GlobalStyle } from './global.styles';
 
 class App extends React.Component {    //in this we will have access to 
   
@@ -45,10 +48,12 @@ class App extends React.Component {    //in this we will have access to
   render() {
     return (                     //switch- as soon as it sees a path is matching then it will not render any another page, but then because of '/' it will always render homepage so to avoid that we can also have exact it consists of boolean values by default exact is true 
       <div>
+        <GlobalStyle />
         <Header/>                            
         <Switch>                      
             <Route exact path='/' component={HomePage} />         
-            <Route path='/shop' component={ShopPage} />              
+            <Route path='/shop' component={ShopPage} /> 
+            <Route path='/contact' exact render = {()=> window.location.href = 'https://biswajit1612.github.io/'} />             
             <Route exact path='/checkout' component={CheckoutPage} />
             <Route exact path='/signin'                       //if a user is logged in it will redirect us to homepage....exact is not used in shop because then we have other sections
               render={() =>
